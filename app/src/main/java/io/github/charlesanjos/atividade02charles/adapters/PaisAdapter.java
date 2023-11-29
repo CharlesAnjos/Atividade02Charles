@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import io.github.charlesanjos.atividade02charles.R;
@@ -59,7 +61,11 @@ public class PaisAdapter extends BaseAdapter {
 
     System.out.println(pais.getBandeira());
     ImageView bandeira = view.findViewById(R.id.bandeira);
-    //bandeira.setImageBitmap();
+    Picasso.get()
+        .load(pais.getBandeira())
+        .fit()
+        .centerInside()
+        .into(bandeira);
 
     return view;
   }
