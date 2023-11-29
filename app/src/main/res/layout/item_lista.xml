@@ -6,6 +6,13 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
+    <ImageView
+        android:id="@+id/bandeira"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/bandeira"
+        android:src="@mipmap/ic_launcher" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

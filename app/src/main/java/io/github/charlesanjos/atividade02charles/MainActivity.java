@@ -5,13 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.method.ScrollingMovementMethod;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,7 +13,6 @@ import com.google.gson.reflect.TypeToken;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    listView = (ListView) findViewById(R.id.list_view);
+    listView = findViewById(R.id.list_view);
 
     executor.execute(() -> {
       Conexao conexao = new Conexao();
@@ -53,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
       Gson gson = new Gson();
 
       if (textoJSON != null) {
-        Type type = new TypeToken<ArrayList<Pais>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Pais>>() {
+        }.getType();
         paises = gson.fromJson(textoJSON, type);
 
         handler.post(() -> {

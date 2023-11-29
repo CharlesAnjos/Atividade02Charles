@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class Pais {
 
-  @SerializedName("numericCode")
-  @Expose
-  private int id;
-
   @SerializedName("name")
   @Expose
   private String nome;
@@ -21,39 +17,16 @@ public class Pais {
   @Expose
   private int populacao;
 
-  @SerializedName("flag")
+  @SerializedName("flags")
   @Expose
   private String bandeira;
 
-  @SerializedName("independent")
-  @Expose
-  private boolean independent;
-
-  public Pais(int id, String nome, String regiao, int populacao, String bandeira, boolean independent) {
-    this.id = id;
+  public Pais(String nome, String regiao, int populacao, String bandeira) {
     this.nome = nome;
     this.regiao = regiao;
     this.populacao = populacao;
     this.bandeira = bandeira;
-    this.independent = independent;
   }
-
-  public int getId() {
-    return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  public boolean isIndependent() {
-    return independent;
-  }
-
-  public void setIndependent(boolean independent) {
-    this.independent = independent;
-  }
-
   public String getNome() {
     return nome;
   }
@@ -82,7 +55,7 @@ public class Pais {
     return bandeira;
   }
 
-  public void setBandeira(String bandeira) {
+  public void setBandeira(String bandera) {
     this.bandeira = bandeira;
   }
 }
