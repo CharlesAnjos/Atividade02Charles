@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     executor.execute(() -> {
       Conexao conexao = new Conexao();
-      String URL = "https://restcountries.com/v2/all?fields=name,region,population,flag,numericCode";
+      String URL = "https://restcountries.com/v3.1/all?fields=name,region,population,flags,numericCode";
       InputStream inputStream = conexao.obterRespostaHTTP(URL);
       Auxiliador auxiliador = new Auxiliador();
       String textoJSON = auxiliador.converter(inputStream);

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -55,6 +56,10 @@ public class PaisAdapter extends BaseAdapter {
     regiao.setText(pais.getRegiao());
     TextView populacao = view.findViewById(R.id.populacao);
     populacao.setText(String.valueOf(pais.getPopulacao()));
+
+    System.out.println(pais.getBandeira());
+    ImageView bandeira = view.findViewById(R.id.bandeira);
+    //bandeira.setImageBitmap();
 
     return view;
   }
