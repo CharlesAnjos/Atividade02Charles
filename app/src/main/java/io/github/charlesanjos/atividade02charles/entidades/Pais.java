@@ -55,11 +55,11 @@ public class Pais {
     return bandeira.getPaisBandeira();
   }
 
-  public void setBandeira(String bandera) {
-    this.bandeira = bandeira;
+  public void setBandeira(String bandeira) {
+    this.bandeira.setPaisBandeira(bandeira);
   }
 
-  private class PaisNome {
+  private static class PaisNome {
     @SerializedName("common")
     @Expose
     private String paisNome;
@@ -72,7 +72,7 @@ public class Pais {
       this.paisNome = paisNome;
     }
   }
-  public class PaisBandeira {
+  public static class PaisBandeira {
     @SerializedName("png")
     @Expose
     private String paisBandeira;
