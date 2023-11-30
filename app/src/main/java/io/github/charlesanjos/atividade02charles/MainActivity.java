@@ -1,16 +1,25 @@
 package io.github.charlesanjos.atividade02charles;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -69,11 +78,37 @@ public class MainActivity extends AppCompatActivity {
 
         handler.post(() -> {
           paisAdapter = new PaisAdapter(this, paises);
-          popularDB(paises);
+          popularDB(paises, findViewById(android.R.id.content));
           listView.setAdapter(paisAdapter);
         });
       }
     });
+  }
+
+  public void gerar(View v) {
+    Intent i = new Intent(MainActivity.this, DBExploreActivity.class);
+    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    PendingIntent pi = PendingIntent.getActivity(MainActivity.this, 0, i, PendingIntent.FLAG_IMMUTABLE);
+
+    Bitmap bitmap = BitmapFactory.decodeResource(
+        this.getResources(), R.drawable.ic_launcher_background
+    );
+
+    builder = new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
+        .setSmallIcon(R.drawable.ic_launcher_background)
+        .setContentTitle("Banco de dados de Países")
+        .setContentText("O armazenamento do banco de dados está pronto.")
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentIntent(pi)
+        .setLargeIcon(bitmap)
+        .setStyle(new NotificationCompat.BigTextStyle().bigText("O armazenamento do banco de dados está pronto.")).build();
+    nm = NotificationManagerCompat.from(MainActivity.this);
+    int temPermissao = ContextCompat.checkSelfPermission(MainActivity.this, PERMISSAO);
+    if(temPermissao != PackageManager.PERMISSION_GRANTED){
+      ActivityCompat.requestPermissions(this, new String[]{PERMISSAO}, CODIGO_SOLICITACAO);
+    } else {
+      nm.notify(NOTIFICATION_ID, builder);
+    }
   }
 
   private void criarCanalNotificacao() {
@@ -91,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }//if
   }//method
 
-  private void popularDB(ArrayList<Pais> paises) {
+  private void popularDB(ArrayList<Pais> paises, View v) {
     dbManager = new DBManager(this);
     dbManager.open();
     for(Pais pais: paises){
@@ -102,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
           pais.getBandeira()
       );
     }
+    gerar(v);
     dbManager.close();
   }
 }
