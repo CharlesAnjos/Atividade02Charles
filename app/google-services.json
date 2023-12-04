@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "240086117959",
+    "project_id": "jogo-paises-23e8d",
+    "storage_bucket": "jogo-paises-23e8d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240086117959:android:788ba1db7d9830c1c84b62",
+        "android_client_info": {
+          "package_name": "io.github.charlesanjos.atividade02charles"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA86-SEDLel66TvYxJYL3cMFch0KwdRdwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
