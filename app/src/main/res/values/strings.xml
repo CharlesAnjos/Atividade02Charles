@@ -5,4 +5,10 @@
     <string name="armazenar">Armazenar</string>
     <string name="iniciar_jogo">Iniciar Jogo!</string>
     <string name="acessar_bd_local">Acessar BD Local</string>
+    <string name="nome_textview">Nome:</string>
+    <string name="digite_o_numero_de_paises">Digite o numero de paises</string>
+    <string name="nome_hint">Digite o nome</string>
+    <string name="jogar_button">JOGAR!</string>
+    <string name="numero_hint">Digite o número de países</string>
+    <string name="numero_paises_textview">Número de Países</string>
 </resources>

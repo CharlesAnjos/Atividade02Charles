@@ -183,5 +183,7 @@ public class MainActivity extends AppCompatActivity {
   }
 
   public void iniciar_jogo(MenuItem item) {
+    Intent intent = new Intent(this,IniciarJogo.class);
+    startActivity(intent);
   }
 }
