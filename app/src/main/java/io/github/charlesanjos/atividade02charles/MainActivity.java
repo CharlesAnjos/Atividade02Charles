@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
     listView = findViewById(R.id.list_view);
     if(paises == null){
+      Log.i("onCreate","lista de países está vazia, preenchendo...");
       consumirPaises();
     } else {
+      Log.i("onCreate","lista de países preenchida");
       listarPaises();
     }
   }
@@ -157,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
     dbManager = new DBManager(this);
     dbManager.open();
     if(dbManager.fetch().getCount() < paises.size()){
+      Log.i("popularDB","banco de dados local está sendo populado");
       dbManager.clearTable();
       for(Pais pais: paises){
         dbManager.insert(
@@ -166,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
             pais.getBandeira()
         );
       }
+    } else {
+      Log.i("popularDB","bando de dados local já estava populado");
     }
     gerarNotificacao(v);
     dbManager.close();
