@@ -22,6 +22,8 @@ public class Pais {
   private PaisBandeira bandeira;
 
   public Pais(String nome, String regiao, int populacao, String bandeira) {
+    this.nome = new PaisNome();
+    this.bandeira = new PaisBandeira();
     this.nome.setPaisNome(nome);
     this.regiao = regiao;
     this.populacao = populacao;
@@ -59,7 +61,7 @@ public class Pais {
     this.bandeira.setPaisBandeira(bandeira);
   }
 
-  private static class PaisNome {
+  private class PaisNome {
     @SerializedName("common")
     @Expose
     private String paisNome;
@@ -72,7 +74,7 @@ public class Pais {
       this.paisNome = paisNome;
     }
   }
-  public static class PaisBandeira {
+  public class PaisBandeira {
     @SerializedName("png")
     @Expose
     private String paisBandeira;

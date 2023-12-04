@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Atividade02Charles</string>
     <string name="bandeira">bandeira</string>
+    <string name="lista_vazia">Lista de países está vazia!</string>
+    <string name="armazenar">Armazenar</string>
+    <string name="iniciar_jogo">Iniciar Jogo!</string>
+    <string name="acessar_bd_local">Acessar BD Local</string>
 </resources>

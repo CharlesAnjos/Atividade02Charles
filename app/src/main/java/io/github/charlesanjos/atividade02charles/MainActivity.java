@@ -19,6 +19,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
@@ -59,33 +61,27 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     criarCanalNotificacao();
+    if(getSupportActionBar() != null){
+      getSupportActionBar().setTitle("Países Online");
+    }
+    getSupportActionBar().hide();
 
     listView = findViewById(R.id.list_view);
-
-    executor.execute(() -> {
-      Conexao conexao = new Conexao();
-      String URL = "https://restcountries.com/v3.1/all?fields=name,region,population,flags,numericCode";
-      InputStream inputStream = conexao.obterRespostaHTTP(URL);
-      Auxiliador auxiliador = new Auxiliador();
-      String textoJSON = auxiliador.converter(inputStream);
-
-      Gson gson = new Gson();
-
-      if (textoJSON != null) {
-        Type type = new TypeToken<ArrayList<Pais>>() {
-        }.getType();
-        paises = gson.fromJson(textoJSON, type);
-
-        handler.post(() -> {
-          paisAdapter = new PaisAdapter(this, paises);
-          popularDB(paises, findViewById(android.R.id.content));
-          listView.setAdapter(paisAdapter);
-        });
-      }
-    });
+    if(paises == null){
+      consumirPaises();
+    } else {
+      listarPaises();
+    }
   }
 
-  public void gerar(View v) {
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+    return true;
+  }
+
+  private void gerarNotificacao(View v) {
     Intent i = new Intent(MainActivity.this, DBExploreActivity.class);
     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     PendingIntent pi = PendingIntent.getActivity(MainActivity.this, 0, i, PendingIntent.FLAG_IMMUTABLE);
@@ -101,7 +97,9 @@ public class MainActivity extends AppCompatActivity {
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setContentIntent(pi)
         .setLargeIcon(bitmap)
-        .setStyle(new NotificationCompat.BigTextStyle().bigText("O armazenamento do banco de dados está pronto.")).build();
+        .setStyle(new NotificationCompat.BigTextStyle().bigText("O armazenamento do banco de dados está pronto."))
+        .setAutoCancel(true)
+        .build();
     nm = NotificationManagerCompat.from(MainActivity.this);
     int temPermissao = ContextCompat.checkSelfPermission(MainActivity.this, PERMISSAO);
     if(temPermissao != PackageManager.PERMISSION_GRANTED){
@@ -123,21 +121,61 @@ public class MainActivity extends AppCompatActivity {
 
       NotificationManager nm = getSystemService(NotificationManager.class);
       nm.createNotificationChannel(canal);
-    }//if
-  }//method
+    }
+  }
+
+  private void consumirPaises(){
+    executor.execute(() -> {
+      Conexao conexao = new Conexao();
+      String URL = "https://restcountries.com/v3.1/all?fields=name,region,population,flags,numericCode";
+      InputStream inputStream = conexao.obterRespostaHTTP(URL);
+      Auxiliador auxiliador = new Auxiliador();
+      String textoJSON = auxiliador.converter(inputStream);
+
+      Gson gson = new Gson();
+
+      if (textoJSON != null) {
+        Type type = new TypeToken<ArrayList<Pais>>() {
+        }.getType();
+        paises = gson.fromJson(textoJSON, type);
+
+        handler.post(this::listarPaises);
+      }
+    });
+  }
+
+  private void listarPaises(){
+    paisAdapter = new PaisAdapter(this, paises);
+    listView.setAdapter(paisAdapter);
+    popularDB(paises, findViewById(android.R.id.content));
+    if(getSupportActionBar() != null){
+      getSupportActionBar().show();
+    }
+  }
 
   private void popularDB(ArrayList<Pais> paises, View v) {
     dbManager = new DBManager(this);
     dbManager.open();
-    for(Pais pais: paises){
-      dbManager.insert(
-          pais.getNome(),
-          pais.getRegiao(),
-          String.valueOf(pais.getPopulacao()),
-          pais.getBandeira()
-      );
+    if(dbManager.fetch().getCount() < paises.size()){
+      dbManager.clearTable();
+      for(Pais pais: paises){
+        dbManager.insert(
+            pais.getNome(),
+            pais.getRegiao(),
+            String.valueOf(pais.getPopulacao()),
+            pais.getBandeira()
+        );
+      }
     }
-    gerar(v);
+    gerarNotificacao(v);
     dbManager.close();
+  }
+
+  public void acessar_bd_local(MenuItem item) {
+    Intent intent = new Intent(this,DBExploreActivity.class);
+    startActivity(intent);
+  }
+
+  public void iniciar_jogo(MenuItem item) {
   }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/acessar_bd_local"
+        android:orderInCategory="100"
+        android:title="@string/acessar_bd_local"
+        android:icon="@drawable/ic_launcher_background"
+        app:showAsAction="never"
+        android:onClick="acessar_bd_local"/>
+    <item
+        android:id="@+id/iniciar_jogo"
+        android:orderInCategory="100"
+        android:title="@string/iniciar_jogo"
+        android:icon="@drawable/ic_launcher_background"
+        app:showAsAction="never"
+        android:onClick="iniciar_jogo"/>
+</menu>
