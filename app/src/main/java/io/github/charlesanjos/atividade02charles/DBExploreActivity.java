@@ -62,9 +62,10 @@ public class DBExploreActivity extends AppCompatActivity {
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-    menu.getItem(0).setTitle("Acessar API");
+    menu.getItem(0).setTitle("Consultar API");
     return true;
   }
+
   public boolean onOptionsItemSelected(MenuItem item) {
     //identificar a ação de voltar a tela
     if (item.getItemId() == android.R.id.home) {//encerra a activity
