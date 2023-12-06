@@ -1,5 +1,7 @@
 package io.github.charlesanjos.atividade02charles.entidades;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -59,6 +61,17 @@ public class Pais {
 
   public void setBandeira(String bandeira) {
     this.bandeira.setPaisBandeira(bandeira);
+  }
+
+  @NonNull
+  @Override
+  public String toString() {
+    return "Pais{" +
+        "nome=" + nome.getPaisNome() +
+        ", regiao='" + regiao + '\'' +
+        ", populacao=" + populacao +
+        ", bandeira=" + bandeira.getPaisBandeira() +
+        '}';
   }
 
   private class PaisNome {

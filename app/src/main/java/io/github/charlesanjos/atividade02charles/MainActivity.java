@@ -22,7 +22,6 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     return true;
   }
 
-  private void gerarNotificacao(View v) {
+  private void gerarNotificacao() {
     Intent i = new Intent(MainActivity.this, DBExploreActivity.class);
     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     PendingIntent pi = PendingIntent.getActivity(MainActivity.this, 0, i, PendingIntent.FLAG_IMMUTABLE);
@@ -150,13 +149,13 @@ public class MainActivity extends AppCompatActivity {
   private void listarPaises(){
     paisAdapter = new PaisAdapter(this, paises);
     listView.setAdapter(paisAdapter);
-    popularDB(paises, findViewById(android.R.id.content));
+    popularDB(paises);
     if(getSupportActionBar() != null){
       getSupportActionBar().show();
     }
   }
 
-  private void popularDB(ArrayList<Pais> paises, View v) {
+  private void popularDB(ArrayList<Pais> paises) {
     dbManager = new DBManager(this);
     dbManager.open();
     if(dbManager.fetch().getCount() < paises.size()){
@@ -173,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
     } else {
       Log.i("popularDB","bando de dados local já estava populado");
     }
-    gerarNotificacao(v);
+    gerarNotificacao();
     dbManager.close();
   }
 

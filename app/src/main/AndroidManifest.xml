@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Atividade02Charles"
         tools:targetApi="31">
         <activity
+            android:name=".PartidaActivity"
+            android:exported="false" />
+        <activity
             android:name=".IniciarJogo"
             android:exported="false" />
         <activity
