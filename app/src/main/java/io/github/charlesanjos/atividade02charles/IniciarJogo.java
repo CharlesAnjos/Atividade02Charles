@@ -3,20 +3,18 @@ package io.github.charlesanjos.atividade02charles;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
-import android.database.Cursor;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,7 +26,7 @@ public class IniciarJogo extends AppCompatActivity {
   private DBManager dbManager;
   private Partida partida = new Partida();
   private EditText nomeUsuarioEditText;
-  private EditText numeroPaisesEditText;
+  private NumberPicker numeroPaises;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +35,17 @@ public class IniciarJogo extends AppCompatActivity {
     if(getSupportActionBar() != null){
       getSupportActionBar().setTitle("Iniciar Jogo!");
     }
+    nomeUsuarioEditText = findViewById(R.id.nome_usuario);
+    numeroPaises = findViewById(R.id.numero_paises);
+    numeroPaises.setMinValue(4);
+    numeroPaises.setMaxValue(250);
   }
 
   @RequiresApi(api = Build.VERSION_CODES.O)
   public void jogar(View view) {
     // pegar os dados da partida
-    nomeUsuarioEditText = findViewById(R.id.nome_usuario);
-    numeroPaisesEditText = findViewById(R.id.numero_paises);
     String nomeUsuario = nomeUsuarioEditText.getText().toString();
-    int numeroPaises = Integer.parseInt(numeroPaisesEditText.getText().toString());
+    int numeroPaises = this.numeroPaises.getValue();
 
     partida.setNome(nomeUsuario);
 
@@ -58,11 +58,12 @@ public class IniciarJogo extends AppCompatActivity {
 
     // selecionar o numero de países desejado
     while (i < numeroPaises){
-      int idpais = r.nextInt(maxidpais)+12501;
+      int idpais = r.nextInt(maxidpais)+1;
       Pais paisPartida = dbManager.getPaisfromDatabase(idpais);
       paisesPartida.add(paisPartida);
       i++;
     }
+    dbManager.close();
 
     partida.setPaises(paisesPartida);
 
@@ -74,5 +75,8 @@ public class IniciarJogo extends AppCompatActivity {
     // armazenar dados do jogo (nome do jogador, paises selecionados) no firebase
     DatabaseReference myRef = database.getReference("partidas/" + partidaDataPath);
     myRef.setValue(partida);
+    Intent partidaIntent = new Intent(this, PartidaActivity.class);
+    partidaIntent.putExtra("partidaDataPath", partidaDataPath);
+    startActivity(partidaIntent);
   }
 }

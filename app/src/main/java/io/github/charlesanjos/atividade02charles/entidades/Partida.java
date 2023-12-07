@@ -13,10 +13,9 @@ public class Partida {
   public Partida() {
   }
 
-  public Partida(String nome, ArrayList<Pais> paises, int pontos, String dataPath) {
+  public Partida(String nome, ArrayList<Pais> paises, String dataPath) {
     this.nome = nome;
     this.paises = paises;
-    this.pontos = pontos;
     this.dataPath = dataPath;
   }
 
@@ -60,9 +59,10 @@ public class Partida {
   @Override
   public String toString() {
     return "Partida{" +
-        "nome='" + nome + '\'' +
-        ", paises=" + paises +
-        ", pontos=" + pontos +
+        "nome='" + this.getNome() + '\'' +
+        ", paises=" + this.getPaises() +
+        ", pontos=" + this.getPontos() +
+        ", dataPath=" + this.getDataPath() +
         '}';
   }
 }

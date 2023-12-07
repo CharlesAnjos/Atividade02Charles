@@ -17,13 +17,15 @@ public class Pais {
 
   @SerializedName("population")
   @Expose
-  private int populacao;
+  private long populacao;
 
   @SerializedName("flags")
   @Expose
   private PaisBandeira bandeira;
 
-  public Pais(String nome, String regiao, int populacao, String bandeira) {
+  public Pais(){}
+
+  public Pais(String nome, String regiao, long populacao, String bandeira) {
     this.nome = new PaisNome();
     this.bandeira = new PaisBandeira();
     this.nome.setPaisNome(nome);
@@ -39,11 +41,11 @@ public class Pais {
     this.nome.setPaisNome(nome);
   }
 
-  public int getPopulacao() {
+  public long getPopulacao() {
     return populacao;
   }
 
-  public void setPopulacao(int populacao) {
+  public void setPopulacao(long populacao) {
     this.populacao = populacao;
   }
 
@@ -87,6 +89,7 @@ public class Pais {
       this.paisNome = paisNome;
     }
   }
+
   public class PaisBandeira {
     @SerializedName("png")
     @Expose
