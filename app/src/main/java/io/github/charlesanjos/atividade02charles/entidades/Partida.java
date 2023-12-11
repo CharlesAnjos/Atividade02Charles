@@ -9,6 +9,7 @@ public class Partida {
   private ArrayList<Pais> paises;
   private int pontos;
   private String dataPath;
+  private int totalPaises;
 
   public Partida() {
   }
@@ -19,8 +20,12 @@ public class Partida {
     this.dataPath = dataPath;
   }
 
-  public int getTotalPontos(){
-    return paises.size();
+  public int getTotalPaises() {
+    return totalPaises;
+  }
+
+  public void setTotalPaises(int totalPaises) {
+    this.totalPaises = totalPaises;
   }
 
   public String getNome() {
@@ -62,6 +67,7 @@ public class Partida {
         "nome='" + this.getNome() + '\'' +
         ", paises=" + this.getPaises() +
         ", pontos=" + this.getPontos() +
+        ", totalPaises=" + this.getTotalPaises() +
         ", dataPath=" + this.getDataPath() +
         '}';
   }

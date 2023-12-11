@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
@@ -42,6 +44,7 @@ public class PartidaActivity extends AppCompatActivity {
   private Partida partida = null;
   private Task<DataSnapshot> myRef;
   private String partidaDataPath;
+  private TextToSpeech tts;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +119,7 @@ public class PartidaActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(
             partida.getNome() + ", você tem " + partida.getPontos() + " pontos");
         getSupportActionBar().setSubtitle(
-            "País " + (rodadasCompletas + 1) + " de " + partida.getTotalPontos()
+            "País " + (rodadasCompletas + 1) + " de " + partida.getPaises().size()
         );
       }
       //pegar pais randomicamente
@@ -131,23 +134,31 @@ public class PartidaActivity extends AppCompatActivity {
         opcoesRodada.add(opcaoId);
         i++;
       }
-      Log.i("opcoes antes do shuffle", opcoesRodada.toString());
       Collections.shuffle(opcoesRodada, new Random());
-      Log.i("opcoes depois do shuffle", opcoesRodada.toString());
       paisRodada = partida.getPaises().get(paisCorretoIndex);
       Picasso.get()
           .load(paisRodada.getBandeira())
           .centerInside()
           .fit()
           .into(imagemBandeira);
+
       Pais paisOpcao1 = partida.getPaises().get(opcoesRodada.get(0));
       opcao1.setText(paisOpcao1.getNome());
+
       Pais paisOpcao2 = partida.getPaises().get(opcoesRodada.get(1));
       opcao2.setText(paisOpcao2.getNome());
+
       Pais paisOpcao3 = partida.getPaises().get(opcoesRodada.get(2));
       opcao3.setText(paisOpcao3.getNome());
+
       Pais paisOpcao4 = partida.getPaises().get(opcoesRodada.get(3));
       opcao4.setText(paisOpcao4.getNome());
+      String speech = "Guess the country!";
+      speech = speech.concat(" one: "+paisOpcao1.getNome());
+      speech = speech.concat(". two: "+paisOpcao2.getNome());
+      speech = speech.concat(". three: "+paisOpcao3.getNome());
+      speech = speech.concat(". four: "+paisOpcao4.getNome());
+      speak(speech);
 
       opcao1.setOnClickListener(v -> {
         checarResposta(opcoesRodada.get(0), paisCorretoIndex);
@@ -166,8 +177,6 @@ public class PartidaActivity extends AppCompatActivity {
       });
 
       continuar.setOnClickListener(v -> {
-        Log.i("continuar", String.valueOf(rodadasCompletas));
-        Log.i("continuar", String.valueOf(partida.getPaises().size()));
         if(rodadasCompletas < partida.getPaises().size()){
           rodada();
         } else {
@@ -175,6 +184,18 @@ public class PartidaActivity extends AppCompatActivity {
         }
       });
     }
+  }
+
+  private void speak(String s) {
+    tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+      @Override
+      public void onInit(int i) {
+        if(i!=TextToSpeech.ERROR){
+          tts.setLanguage(Locale.US);
+          tts.speak(s,TextToSpeech.QUEUE_FLUSH,null,null);
+        }
+      }
+    });
   }
 
   private void encerrarPartida() {
@@ -189,14 +210,17 @@ public class PartidaActivity extends AppCompatActivity {
   void checarResposta(int opcao, int paisCorreto) {
     encerrarRodada();
     if (opcao == paisCorreto) {
+      speak("Yes! Congrats!");
       partida.setPontos(partida.getPontos() + 1);
       resultado.setText("✅✅✅✅");
       resultado.setBackgroundColor(Color.GREEN);
       resposta.setText("ISSO!");
     } else {
+      String correto = partida.getPaises().get(paisCorreto).getNome();
+      speak("No, it is "+correto+". Try again!");
       resultado.setText("❌❌❌❌");
       resultado.setBackgroundColor(Color.RED);
-      resposta.setText("Não, o correto é "+ partida.getPaises().get(paisCorreto).getNome() +"!");
+      resposta.setText("Não, o correto é "+ correto +"!");
     }
     rodadasCompletas++;
   }

@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.google.firebase.database.DatabaseReference;
@@ -66,10 +67,11 @@ public class IniciarJogo extends AppCompatActivity {
     dbManager.close();
 
     partida.setPaises(paisesPartida);
+    partida.setTotalPaises(paisesPartida.size());
 
     // conectar no banco firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    String partidaDataPath = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + "/" +partida.getNome();
+    String partidaDataPath = String.valueOf(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
     partida.setDataPath(partidaDataPath);
 
     // armazenar dados do jogo (nome do jogador, paises selecionados) no firebase
