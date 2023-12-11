@@ -60,7 +60,7 @@ public class FinalActivity extends AppCompatActivity {
 
     AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
     Intent intent = new Intent(this, JogoAlarmReceiver.class);
-    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+    PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
     Calendar time = Calendar.getInstance();
     time.setTimeInMillis(System.currentTimeMillis());
     time.add(Calendar.SECOND, 5);
